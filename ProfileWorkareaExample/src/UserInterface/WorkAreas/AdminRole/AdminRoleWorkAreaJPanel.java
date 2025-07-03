@@ -54,6 +54,7 @@ public class AdminRoleWorkAreaJPanel extends javax.swing.JPanel {
         btnMyProfile = new javax.swing.JButton();
         btnManageStudent = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(204, 204, 255));
         setForeground(new java.awt.Color(51, 51, 51));
 
         btnAdministerUserAccounts.setBackground(new java.awt.Color(102, 153, 255));
