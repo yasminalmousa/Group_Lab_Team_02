@@ -71,7 +71,7 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
             }
         });
         add(Back);
-        Back.setBounds(20, 260, 80, 23);
+        Back.setBounds(10, 10, 80, 23);
 
         Next.setText("Next >>");
         Next.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +85,7 @@ public class ManagePersonsJPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Lao MN", 1, 24)); // NOI18N
         jLabel2.setText("Register New Person");
         add(jLabel2);
-        jLabel2.setBounds(21, 20, 550, 34);
+        jLabel2.setBounds(180, 20, 550, 34);
 
         jLabel3.setText("Full Name:");
         add(jLabel3);
