@@ -14,7 +14,7 @@ public class StudentProfile extends Profile {
     private double gpa;
     private int creditsCompleted;
     private int creditsRequired;
-    private String academicLevel; // Freshman, Sophomore, Junior, Senior, Graduate
+    private String academicLevel;
     private String advisor;
     private String email;
     private String phone;
@@ -22,7 +22,6 @@ public class StudentProfile extends Profile {
     private String emergencyContact;
     private ArrayList<String> coursesEnrolled;
     private Date expectedGraduation;
-    private String name; // ADD THIS FIELD since Person doesn't have name
 
     public StudentProfile(Person p) {
         super(p);
@@ -31,7 +30,6 @@ public class StudentProfile extends Profile {
         this.coursesEnrolled = new ArrayList<>();
         this.creditsRequired = 120;
         this.academicLevel = "Freshman";
-        this.name = "";
     }
     
     public StudentProfile(Person p, String nuid) {
@@ -39,11 +37,10 @@ public class StudentProfile extends Profile {
         this.nuid = nuid;
     }
     
-    // ADD THIS CONSTRUCTOR for the ManageStudentsJPanel
+    // Constructor for ManageStudentsJPanel
     public StudentProfile(String studentId, String name, String email, String major, String year, double gpa) {
-        super(new Person(studentId));
+        super(new Person(studentId, name));
         this.studentId = studentId;
-        this.name = name;
         this.email = email;
         this.major = major;
         this.academicLevel = year;
@@ -62,11 +59,12 @@ public class StudentProfile extends Profile {
         return "Student";
     }
 
-    // UPDATE THIS METHOD to check both student ID and person ID
     @Override
     public boolean isMatch(String id) {
-        // Check both the student ID and the underlying person ID
         if (getStudentId() != null && getStudentId().equals(id)) {
+            return true;
+        }
+        if (getNuid() != null && getNuid().equals(id)) {
             return true;
         }
         if (getPerson().getPersonId().equals(id)) {
@@ -75,26 +73,27 @@ public class StudentProfile extends Profile {
         return false;
     }
     
-    // ADD THESE METHODS for the ManageStudentsJPanel
+    // Get name from the Person object
     public String getName() { 
-        return name; 
+        return getPerson().getName(); 
     }
     
+    // Set name in the Person object
     public void setName(String name) { 
-        this.name = name; 
+        getPerson().setName(name);
     }
     
-    // ADD THIS METHOD - panel expects getYear() not getAcademicLevel()
+    // Panel expects getYear() not getAcademicLevel()
     public String getYear() { 
         return academicLevel; 
     }
     
-    // ADD THIS METHOD - panel expects setYear() not setAcademicLevel()
+    // Panel expects setYear() not setAcademicLevel()
     public void setYear(String year) { 
         this.academicLevel = year; 
     }
     
-    // ADD THIS METHOD - panel expects setGPA() not setGpa()
+    // Panel expects setGPA() not setGpa()
     public void setGPA(double gpa) { 
         this.gpa = gpa; 
     }
@@ -118,7 +117,6 @@ public class StudentProfile extends Profile {
     public void setEnrollmentDate(Date enrollmentDate) { this.enrollmentDate = enrollmentDate; }
     
     public double getGPA() { return gpa; }
-
     
     public int getCreditsCompleted() { return creditsCompleted; }
     public void setCreditsCompleted(int creditsCompleted) { this.creditsCompleted = creditsCompleted; }

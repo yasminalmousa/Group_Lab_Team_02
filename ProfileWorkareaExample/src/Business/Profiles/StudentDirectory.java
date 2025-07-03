@@ -34,7 +34,17 @@ public class StudentDirectory {
     
     public StudentProfile findStudentById(String id) {
         for (StudentProfile sp : studentlist) {
-            if (sp.isMatch(id)) {
+            if (sp.getStudentId() != null && sp.getStudentId().equals(id)) {
+                return sp;
+            }
+        }
+        return null;
+    }
+    
+    // Add method to find by NUID
+    public StudentProfile findStudentByNuid(String nuid) {
+        for (StudentProfile sp : studentlist) {
+            if (sp.getNuid() != null && sp.getNuid().equals(nuid)) {
                 return sp;
             }
         }
