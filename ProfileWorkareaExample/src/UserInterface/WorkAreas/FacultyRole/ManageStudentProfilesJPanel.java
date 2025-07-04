@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author yasminalmousa
+ * @author PrimeAgent28th
  */
 public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
 

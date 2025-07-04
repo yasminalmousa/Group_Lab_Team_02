@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author kal
+ * @author PrimeAgent28th
  */
 public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
 
