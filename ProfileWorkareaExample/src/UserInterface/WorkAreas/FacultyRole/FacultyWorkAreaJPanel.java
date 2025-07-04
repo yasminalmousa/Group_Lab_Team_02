@@ -50,10 +50,10 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         jButton11 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 255, 204));
+        setBackground(new java.awt.Color(0, 51, 51));
         setForeground(new java.awt.Color(51, 51, 51));
 
-        jButton4.setBackground(new java.awt.Color(102, 153, 255));
+        jButton4.setBackground(new java.awt.Color(204, 204, 204));
         jButton4.setFont(getFont());
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText(" Manage Courses");
@@ -67,7 +67,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton10.setBackground(new java.awt.Color(102, 153, 255));
+        jButton10.setBackground(new java.awt.Color(204, 204, 204));
         jButton10.setFont(getFont());
         jButton10.setForeground(new java.awt.Color(255, 255, 255));
         jButton10.setText("Manage Students Profiles");
@@ -81,7 +81,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton6.setBackground(new java.awt.Color(102, 153, 255));
+        jButton6.setBackground(new java.awt.Color(204, 204, 204));
         jButton6.setFont(getFont());
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("My Profile");
@@ -95,7 +95,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton11.setBackground(new java.awt.Color(102, 153, 255));
+        jButton11.setBackground(new java.awt.Color(204, 204, 204));
         jButton11.setFont(getFont());
         jButton11.setForeground(new java.awt.Color(255, 255, 255));
         jButton11.setText("Performance Reports");
@@ -110,6 +110,7 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("My Faculty Profie");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -134,9 +135,9 @@ public class FacultyWorkAreaJPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(76, 76, 76)
+                .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
