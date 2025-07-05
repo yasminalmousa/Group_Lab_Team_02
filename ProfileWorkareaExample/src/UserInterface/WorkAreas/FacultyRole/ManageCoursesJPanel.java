@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  *
- * @author PrimeAgent28
+ * @author PrimeAgent28th
  */
 public class ManageCoursesJPanel extends javax.swing.JPanel {
 

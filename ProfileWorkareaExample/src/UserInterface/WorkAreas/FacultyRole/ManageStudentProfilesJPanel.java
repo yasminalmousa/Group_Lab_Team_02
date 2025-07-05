@@ -27,7 +27,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
     private Business business;
     private JPanel CardSequencePanel;
     private String currentFacultyId;
-    
+
     /**
      * Creates new form ManageStudentProfilesJPanel
      */
@@ -37,9 +37,10 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         setupEventHandlers();
         hideEditButtons(); // Faculty can't edit
     }
-    
+
     /**
-     * Creates new form ManageStudentProfilesJPanel with Business and CardSequencePanel
+     * Creates new form ManageStudentProfilesJPanel with Business and
+     * CardSequencePanel
      */
     public ManageStudentProfilesJPanel(Business b, JPanel clp) {
         business = b;
@@ -50,9 +51,10 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         hideEditButtons(); // Faculty can't edit
         loadRealStudentData();
     }
-    
+
     /**
-     * Creates new form ManageStudentProfilesJPanel with Business, CardSequencePanel, and Faculty ID
+     * Creates new form ManageStudentProfilesJPanel with Business,
+     * CardSequencePanel, and Faculty ID
      */
     public ManageStudentProfilesJPanel(Business b, JPanel clp, String facultyId) {
         business = b;
@@ -64,7 +66,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         hideEditButtons(); // Faculty can't edit
         loadRealStudentData();
     }
-    
+
     /**
      * Hide edit buttons for faculty (view-only access)
      */
@@ -73,14 +75,14 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         jButton2.setVisible(false); // Edit Student
         jButton3.setVisible(false); // Delete Student
     }
-    
+
     /**
      * Initialize the table model and setup
      */
     private void initializeTable() {
         tableModel = (DefaultTableModel) studentTable.getModel();
         studentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         // Set column widths
         studentTable.getColumnModel().getColumn(0).setPreferredWidth(80);  // Student ID
         studentTable.getColumnModel().getColumn(1).setPreferredWidth(120); // Full Name
@@ -91,7 +93,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         studentTable.getColumnModel().getColumn(6).setPreferredWidth(80);  // Status
         studentTable.getColumnModel().getColumn(7).setPreferredWidth(100); // Enrollment Date
     }
-    
+
     /**
      * Setup event handlers for table selection and buttons
      */
@@ -105,41 +107,41 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         // Back button
         btnBack.addActionListener(e -> goBack());
     }
-    
+
     /**
      * Load real student data from the business layer
      */
     private void loadRealStudentData() {
         // Clear existing data
         tableModel.setRowCount(0);
-        
+
         if (business != null) {
             try {
                 StudentDirectory studentDirectory = business.getStudentDirectory();
                 if (studentDirectory != null) {
                     ArrayList<StudentProfile> studentList = studentDirectory.getStudentList();
-                    
+
                     if (studentList != null) {
                         for (StudentProfile student : studentList) {
                             if (student != null) {
-                                String gpaString = student.getGPA() != 0.0 ? 
-                                    String.format("%.2f", student.getGPA()) : "0.00";
+                                String gpaString = student.getGPA() != 0.0
+                                        ? String.format("%.2f", student.getGPA()) : "0.00";
                                 String status = "Active"; // Default status
                                 String enrollmentDate = "2024-01-01"; // Default date
-                                
+
                                 addStudentToTable(
-                                    student.getStudentId() != null ? student.getStudentId() : "",
-                                    student.getName() != null ? student.getName() : "",
-                                    student.getEmail() != null ? student.getEmail() : "",
-                                    student.getMajor() != null ? student.getMajor() : "",
-                                    student.getYear() != null ? student.getYear() : "Freshman",
-                                    gpaString,
-                                    status,
-                                    enrollmentDate
+                                        student.getStudentId() != null ? student.getStudentId() : "",
+                                        student.getName() != null ? student.getName() : "",
+                                        student.getEmail() != null ? student.getEmail() : "",
+                                        student.getMajor() != null ? student.getMajor() : "",
+                                        student.getYear() != null ? student.getYear() : "Freshman",
+                                        gpaString,
+                                        status,
+                                        enrollmentDate
                                 );
                             }
                         }
@@ -150,7 +152,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
             }
         }
     }
-    
+
     /**
      * Add a student to the table
      */
@@ -158,7 +160,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         Object[] row = {studentId, fullName, email, major, yearLevel, gpa, status, enrollmentDate};
         tableModel.addRow(row);
     }
-    
+
     /**
      * Populate form fields from selected table row
      */
@@ -166,31 +168,33 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         int selectedRow = studentTable.getSelectedRow();
         if (selectedRow >= 0) {
             fieldStudentID.setText(tableModel.getValueAt(selectedRow, 0).toString());
-            
+
             // Split full name into first and last name
             String fullName = tableModel.getValueAt(selectedRow, 1).toString();
             String[] nameParts = fullName.split(" ", 2);
             fieldFirstName.setText(nameParts[0]);
             fieldLastName.setText(nameParts.length > 1 ? nameParts[1] : "");
-            
+
             fieldEmail.setText(tableModel.getValueAt(selectedRow, 2).toString());
             fieldMajor.setText(tableModel.getValueAt(selectedRow, 3).toString());
             yearComboBox.setSelectedItem(tableModel.getValueAt(selectedRow, 4).toString());
+            fieldGPA.setText(tableModel.getValueAt(selectedRow, 5).toString()); // Add this line to display GPA
             fieldStatus.setText(tableModel.getValueAt(selectedRow, 6).toString());
             fieldPhone.setText("(555) 123-4567"); // Sample phone number
-            
+
             // Make fields read-only for faculty
             fieldStudentID.setEditable(false);
             fieldFirstName.setEditable(false);
             fieldLastName.setEditable(false);
             fieldEmail.setEditable(false);
             fieldMajor.setEditable(false);
+            fieldGPA.setEditable(false); // Add this line to make GPA read-only for faculty
             fieldStatus.setEditable(false);
             fieldPhone.setEditable(false);
             yearComboBox.setEnabled(false);
         }
     }
-    
+
     /**
      * Go back to Faculty Work Area
      */
@@ -242,6 +246,8 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        fieldGPA = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
@@ -273,12 +279,12 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
         jLabel11.setText("Student Profile List");
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object [][] {
 
-            },
-            new String [] {
-                "Student ID", "Full Name", "Email", "Major", "Year Level", "GPA", "Status", "Enrollment Date"
-            }
+                },
+                new String [] {
+                        "Student ID", "Full Name", "Email", "Major", "Year Level", "GPA", "Status", "Enrollment Date"
+                }
         ));
         jScrollPane1.setViewportView(studentTable);
 
@@ -293,101 +299,107 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
 
         jButton3.setText("Delete Student");
 
+        jLabel12.setText("GPA:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(btnBack)
-                            .addGroup(layout.createSequentialGroup()
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(fieldStudentID)
-                                    .addComponent(fieldEmail)
-                                    .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addGap(33, 33, 33)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(fieldFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                    .addComponent(fieldLastName)
-                                    .addComponent(fieldPhone))
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addGap(28, 28, 28)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(fieldMajor, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                                    .addComponent(fieldStatus))))))
-                .addContainerGap(72, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(140, 140, 140)
-                .addComponent(jButton3)
-                .addGap(117, 117, 117))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel11)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(btnBack)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel3)
+                                                                        .addComponent(jLabel4)
+                                                                        .addComponent(jLabel5))
+                                                                .addGap(45, 45, 45)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                        .addComponent(fieldStudentID)
+                                                                        .addComponent(fieldEmail)
+                                                                        .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGap(50, 50, 50)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel1)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel6)
+                                                                        .addComponent(jLabel7)
+                                                                        .addComponent(jLabel8))
+                                                                .addGap(33, 33, 33)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                        .addComponent(fieldFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                                                        .addComponent(fieldLastName)
+                                                                        .addComponent(fieldPhone))
+                                                                .addGap(30, 30, 30)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel9)
+                                                                        .addComponent(jLabel10)
+                                                                        .addComponent(jLabel12))
+                                                                .addGap(28, 28, 28)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                        .addComponent(fieldMajor, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                                                                        .addComponent(fieldStatus)
+                                                                        .addComponent(fieldGPA))))))
+                                .addContainerGap(72, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2)
+                                .addGap(140, 140, 140)
+                                .addComponent(jButton3)
+                                .addGap(117, 117, 117))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(btnBack)
-                .addGap(7, 7, 7)
-                .addComponent(jLabel1)
-                .addGap(31, 31, 31)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(fieldStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(fieldMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(fieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(180, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(btnBack)
+                                .addGap(7, 7, 7)
+                                .addComponent(jLabel1)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(fieldStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel9)
+                                        .addComponent(fieldMajor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7)
+                                        .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel10)
+                                        .addComponent(fieldStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(yearComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8)
+                                        .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel12)
+                                        .addComponent(fieldGPA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(58, 58, 58)
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton1)
+                                        .addComponent(jButton2)
+                                        .addComponent(jButton3))
+                                .addContainerGap(180, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -400,6 +412,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnBack;
     private javax.swing.JTextField fieldEmail;
     private javax.swing.JTextField fieldFirstName;
+    private javax.swing.JTextField fieldGPA;
     private javax.swing.JTextField fieldLastName;
     private javax.swing.JTextField fieldMajor;
     private javax.swing.JTextField fieldPhone;
@@ -411,6 +424,7 @@ public class ManageStudentProfilesJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
