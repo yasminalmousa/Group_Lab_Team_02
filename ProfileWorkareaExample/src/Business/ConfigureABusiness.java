@@ -33,7 +33,7 @@ class ConfigureABusiness {
 // person representing sales organization        
         Person person001 = persondirectory.newPerson("Kal Bugrara");
         Person person002 = persondirectory.newPerson("Gina Montana");
-        Person person003 = persondirectory.newPerson("Adam Rollen");
+        // Person person003 = persondirectory.newPerson("Adam Rollen"); // REMOVED - no longer needed
         Person person004 = persondirectory.newPerson("Dr. Sarah Wilson"); // Faculty
         Person person005 = persondirectory.newPerson("Jim Dellon");
         Person person006 = persondirectory.newPerson("Anna Shnider");
@@ -45,8 +45,9 @@ class ConfigureABusiness {
         EmployeeDirectory employeedirectory = business.getEmployeeDirectory();
         EmployeeProfile employeeprofile0 = employeedirectory.newEmployeeProfile(person001);
         
-        StudentDirectory studentdirectory = business.getStudentDirectory();
-        StudentProfile studentprofile0 = studentdirectory.newStudentProfile(person003);
+        // REMOVED: No longer creating dummy student
+        // StudentDirectory studentdirectory = business.getStudentDirectory();
+        // StudentProfile studentprofile0 = studentdirectory.newStudentProfile(person003);
         
         // Create Faculty profiles with complete information
         FacultyDirectory facultydirectory = business.getFacultyDirectory();
@@ -57,7 +58,8 @@ class ConfigureABusiness {
 // Create User accounts that link to specific profiles
         UserAccountDirectory uadirectory = business.getUserAccountDirectory();
         UserAccount ua3 = uadirectory.newUserAccount(employeeprofile0, "admin", "****"); /// admin user account
-        UserAccount ua4 = uadirectory.newUserAccount(studentprofile0, "adam", "****"); /// student user account
+        // REMOVED: No longer creating dummy student user account
+        // UserAccount ua4 = uadirectory.newUserAccount(studentprofile0, "adam", "****"); /// student user account
         UserAccount ua5 = uadirectory.newUserAccount(facultyprofile0, "faculty", "****"); /// faculty user account
 
         return business;

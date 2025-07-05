@@ -18,7 +18,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
     private Business business;
     private JPanel CardSequencePanel;
     private String currentFacultyId;
-    
+
     /**
      * Creates new form FacultyProfileJPanel
      */
@@ -27,7 +27,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         setupEventHandlers();
         loadSampleData(); // Use sample data when no business context
     }
-    
+
     /**
      * Creates new form FacultyProfileJPanel with Business and CardSequencePanel
      */
@@ -39,21 +39,21 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         setupEventHandlers();
         loadFacultyData(); // Load actual data when business context is available
     }
-    
+
     /**
      * Setup event handlers for buttons
      */
     private void setupEventHandlers() {
         // Save Changes button (jButton1)
         jButton1.addActionListener(e -> saveChanges());
-        
+
         // Cancel button (jButton2)
         jButton2.addActionListener(e -> cancelChanges());
-        
+
         // Back button
         btnBack.addActionListener(e -> goBack());
     }
-    
+
     /**
      * Load sample faculty data for testing
      */
@@ -62,11 +62,11 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         fieldFacultyID.setText("FAC001");
         fieldFacultyID.setEditable(false);
         fieldFacultyID.setBackground(new java.awt.Color(248, 249, 250));
-        
+
         fieldDepartment.setText("Computer Science");
         fieldDepartment.setEditable(false);
         fieldDepartment.setBackground(new java.awt.Color(248, 249, 250));
-        
+
         // Set editable fields with sample data
         fieldFirstName.setText("Sarah");
         fieldLastName.setText("Johnson");
@@ -83,17 +83,17 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         fieldFacultyID.setBackground(new java.awt.Color(248, 249, 250));
         fieldDepartment.setEditable(false);
         fieldDepartment.setBackground(new java.awt.Color(248, 249, 250));
-        
+
         if (business != null && currentFacultyId != null) {
             try {
                 // Get the actual faculty profile from the business layer
                 FacultyProfile facultyProfile = business.getFacultyDirectory().findFacultyById(currentFacultyId);
-                
+
                 if (facultyProfile != null) {
                     // Load real data from the faculty profile
                     fieldFacultyID.setText(facultyProfile.getFacultyId());
                     fieldDepartment.setText(facultyProfile.getDepartment());
-                    
+
                     // For name, split the full name into first and last name
                     String fullName = facultyProfile.getName();
                     if (fullName != null && !fullName.isEmpty()) {
@@ -104,18 +104,18 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
                         fieldFirstName.setText("");
                         fieldLastName.setText("");
                     }
-                    
+
                     fieldEmail.setText(facultyProfile.getEmail());
                     fieldPhone.setText(facultyProfile.getPhoneNumber());
-                    
+
                     System.out.println("Successfully loaded faculty data for: " + currentFacultyId);
                 } else {
                     // Faculty not found, show error and use sample data
                     System.out.println("Faculty profile not found for ID: " + currentFacultyId);
-                    JOptionPane.showMessageDialog(this, 
-                        "Faculty profile not found: " + currentFacultyId, 
-                        "Error", 
-                        JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Faculty profile not found: " + currentFacultyId,
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE);
                     loadSampleData();
                 }
             } catch (Exception e) {
@@ -130,7 +130,7 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
             loadSampleData();
         }
     }
-    
+
     /**
      * Save profile changes
      */
@@ -140,114 +140,113 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
                 if (business != null && currentFacultyId != null) {
                     // Get the faculty profile from business layer
                     FacultyProfile facultyProfile = business.getFacultyDirectory().findFacultyById(currentFacultyId);
-                    
+
                     if (facultyProfile != null) {
                         // Update the faculty profile with new data
                         String firstName = fieldFirstName.getText().trim();
                         String lastName = fieldLastName.getText().trim();
                         String fullName = firstName + " " + lastName;
-                        
+
                         facultyProfile.setName(fullName);
                         facultyProfile.setEmail(fieldEmail.getText().trim());
                         facultyProfile.setPhoneNumber(fieldPhone.getText().trim());
-                        
+
                         // Note: Changes are saved to the object in memory
                         // If you need persistence, implement save functionality in your business layer
-                        
-                        JOptionPane.showMessageDialog(this, 
-                            "Profile updated successfully!", 
-                            "Success", 
-                            JOptionPane.INFORMATION_MESSAGE);
-                            
+                        JOptionPane.showMessageDialog(this,
+                                "Profile updated successfully!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+
                         System.out.println("Profile updated for faculty: " + currentFacultyId);
                     } else {
-                        JOptionPane.showMessageDialog(this, 
-                            "Faculty profile not found.", 
-                            "Error", 
-                            JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this,
+                                "Faculty profile not found.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, 
-                        "Unable to save - no business connection.", 
-                        "Error", 
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Unable to save - no business connection.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, 
-                    "Error saving profile: " + e.getMessage(), 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Error saving profile: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }
     }
-    
+
     /**
      * Cancel changes and reload original data
      */
     private void cancelChanges() {
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Are you sure you want to cancel? Any unsaved changes will be lost.", 
-            "Confirm Cancel", 
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
-        
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to cancel? Any unsaved changes will be lost.",
+                "Confirm Cancel",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
         if (confirm == JOptionPane.YES_OPTION) {
             // Reload original data
             loadFacultyData();
-            
-            JOptionPane.showMessageDialog(this, 
-                "Changes cancelled - profile reset to original values.", 
-                "Cancelled", 
-                JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane.showMessageDialog(this,
+                    "Changes cancelled - profile reset to original values.",
+                    "Cancelled",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     /**
      * Validate input fields
      */
     private boolean validateInput() {
         if (fieldFirstName.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Please enter your first name.", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter your first name.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
             fieldFirstName.requestFocus();
             return false;
         }
-        
+
         if (fieldLastName.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Please enter your last name.", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter your last name.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
             fieldLastName.requestFocus();
             return false;
         }
-        
+
         if (fieldEmail.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "Please enter your email address.", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter your email address.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
             fieldEmail.requestFocus();
             return false;
         }
-        
+
         // Basic email validation
         String email = fieldEmail.getText().trim();
         if (!email.contains("@") || !email.contains(".")) {
-            JOptionPane.showMessageDialog(this, 
-                "Please enter a valid email address.", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid email address.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
             fieldEmail.requestFocus();
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Go back to Faculty Work Area
      */
@@ -255,25 +254,25 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         if (CardSequencePanel != null) {
             // Navigate back to the Faculty Work Area
             CardSequencePanel.removeAll();
-            
+
             // Create a new Faculty Work Area panel
             FacultyWorkAreaJPanel facultyWorkArea = new FacultyWorkAreaJPanel(business, CardSequencePanel, currentFacultyId);
-            
+
             // Add it to the card layout
             CardSequencePanel.add("FacultyWorkArea", facultyWorkArea);
-            
+
             // Show the faculty work area
             ((java.awt.CardLayout) CardSequencePanel.getLayout()).show(CardSequencePanel, "FacultyWorkArea");
-            
+
             // Refresh the display
             CardSequencePanel.revalidate();
             CardSequencePanel.repaint();
         } else {
             // Fallback if CardSequencePanel is null
-            JOptionPane.showMessageDialog(this, 
-                "Back button clicked - returning to Faculty Work Area", 
-                "Navigation", 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Back button clicked - returning to Faculty Work Area",
+                    "Navigation",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -303,30 +302,23 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(0, 51, 51));
+        setBackground(new java.awt.Color(204, 255, 204));
 
         jLabel1.setFont(new java.awt.Font("Lao MN", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("My Faculty Profile");
 
         btnBack.setText("<<< Back");
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Faculty ID:");
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name:");
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name:");
 
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Email:");
 
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Department:");
 
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Phone:");
 
         jButton1.setText("Save Changes");
@@ -336,73 +328,79 @@ public class FacultyProfileJPanel extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton1)
-                            .addGap(34, 34, 34)
-                            .addComponent(jButton2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnBack))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(fieldFirstName))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(fieldLastName))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(fieldFacultyID, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(64, 64, 64)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel8))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(fieldDepartment, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                .addComponent(fieldEmail)
-                                .addComponent(fieldPhone)))))
-                .addContainerGap(304, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(29, 29, 29)
+                                                .addComponent(btnBack)
+                                                .addGap(156, 156, 156)
+                                                .addComponent(jLabel1))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(39, 39, 39)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel3)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(fieldFirstName))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel4)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(fieldLastName))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel2)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(fieldFacultyID, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(64, 64, 64)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel5)
+                                                        .addComponent(jLabel6)
+                                                        .addComponent(jLabel8))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(fieldDepartment, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                                        .addComponent(fieldEmail)
+                                                        .addComponent(fieldPhone)))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(166, 166, 166)
+                                                .addComponent(jButton1)
+                                                .addGap(86, 86, 86)
+                                                .addComponent(jButton2)))
+                                .addContainerGap(304, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel1)
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6)
-                    .addComponent(fieldFacultyID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel8)
-                    .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(btnBack))
-                .addContainerGap(491, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(39, 39, 39)
+                                                .addComponent(jLabel1))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(btnBack)))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel6)
+                                        .addComponent(fieldFacultyID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fieldDepartment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(fieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel8)
+                                        .addComponent(fieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(49, 49, 49)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton1)
+                                        .addComponent(jButton2))
+                                .addContainerGap(475, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
