@@ -9,7 +9,7 @@ INFO 5100 Midterm Project - Implementing Access-Controlled Use Cases
 | Team Member | Role Assignment | Responsibilities |
 |-------------|----------------|-----------------|
 | Yasmin Almousa | Administrator Use Case |User account management, person registration, student/faculty records management, admin profile management |
-| Toluwalase Mbaanne  Faculty Use Case | Course management, performance reports, student profile viewing, faculty profile management |
+| Toluwalase Mbaanne  | Faculty Use Case | Course management, performance reports, student profile viewing, faculty profile management |
 | Paul Kwofie | Student Use Case |Coursework management, class registration, graduation audit, transcript review |
 
 ## 3. Project Overview
