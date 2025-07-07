@@ -4,11 +4,12 @@
  */
 package Model;
 
-public class Main {
+/**
+ *
+ * @author Tolu
+ */
+public class Member3 {
     public static void main(String[] args) {
-        Member1.main(args);
-        //Member2.main(args);
-        //Member3.main(args);
-        //Member4.main(args);
+        System.out.println("Hello from Member 3, Toluwalase!");
     }
 }
